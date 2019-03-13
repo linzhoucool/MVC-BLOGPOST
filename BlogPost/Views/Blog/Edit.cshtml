@@ -1,0 +1,46 @@
+﻿
+@model PostBlogViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/PostBlog.js"></script>
+
+}
+
+
+<form method="post" enctype="multipart/form-data">
+    @Html.ValidationSummary(false)
+    <div class="form-group">
+        @Html.LabelFor(p => p.Title, "Title")
+        @Html.TextBoxFor(p => p.Title, new { @class = "form-control", placeholder = "Title" })
+        @Html.ValidationMessageFor(p => p.Title, "Please input Title", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+
+        <input type="file" name="Media" />
+
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Body, "Content")
+        @Html.TextAreaFor(p => p.Body, new { @class = "form-control", placeholder = "Content", rows = 8, columns = 8 })
+        @Html.ValidationMessageFor(p => p.Body, "Please input Contents", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Published, "Published: ")
+        @Html.EditorFor(p => p.Published, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.Published, "Please Check Published", new { @class = "text-danger" })
+    </div>
+    
+    <div class="">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+</form>
