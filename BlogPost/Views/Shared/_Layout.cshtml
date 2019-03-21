@@ -9,6 +9,20 @@
 
 </head>
 <body>
+
+    <div class="top-Menu">
+        <div class="search">
+            @using (Html.BeginForm("Check", "Home", FormMethod.Post))
+            {
+                <div style="margin-top:350px;">
+                    <input type="text" name="searchTitle" placeholder="check" />
+                    <button type="submit">Search!</button>
+                </div>
+
+            }
+        </div>
+    </div>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">

@@ -37,7 +37,6 @@ namespace BlogPost.Controllers
               return View(model);
             }
 
-
         [HttpGet]
         public ActionResult PostBlog()
         {
@@ -57,6 +56,7 @@ namespace BlogPost.Controllers
             {
                 return View();
             }
+
             var userId = User.Identity.GetUserId();
             if (DbContext.Blogs.Any(p => p.UserId == userId &&
             p.Title == formData.Title &&
@@ -69,7 +69,6 @@ namespace BlogPost.Controllers
 
             string fileExtension;
             //Validating file upload
-
             if (formData.Media != null)
 
             {
@@ -85,9 +84,7 @@ namespace BlogPost.Controllers
             if (!id.HasValue)
             {
                 blog = new Blog();
-
                 blog.UserId = userId;
-
                 DbContext.Blogs.Add(blog);
             }
             else
@@ -97,57 +94,29 @@ namespace BlogPost.Controllers
                 {
                     return RedirectToAction(nameof(BlogController.Index));
                 }
-            }
-           
-
+            } 
             blog.Title = formData.Title;
-
             blog.Body = formData.Body;
-
             blog.Published = formData.Published;
-
             blog.DateCreated = DateTime.Now;
-
             blog.DateUpdated = DateTime.Now;
-
             //Handling file upload
 
             if (formData.Media != null)
-
             {
-
                 if (!Directory.Exists(Constants.MappedUploadFolder))
-
                 {
 
                     Directory.CreateDirectory(Constants.MappedUploadFolder);
-
                 }
-
-
                 var fileName = formData.Media.FileName;
                 //var fullPathWithName = formData.Media.FileName;
-
                 var fullPathWithName = Constants.MappedUploadFolder + fileName;
-
-
-
                 formData.Media.SaveAs(fullPathWithName);
-
-
-
-                blog.MediaUrl = Constants.UploadFolder + fullPathWithName;
-
+                blog.MediaUrl = Constants.UploadFolder + fileName;
             }
-
-
-
             DbContext.SaveChanges();
-
-
-
             return RedirectToAction(nameof(BlogController.Index));
-
         }
 
 
@@ -179,13 +148,9 @@ namespace BlogPost.Controllers
         }
 
         [HttpPost]
-
         public ActionResult Edit(int id, PostBlogViewModel formData)
-
         {
-
-            return SaveBlog(id, formData);
-
+           return SaveBlog(id, formData);
         }
 
         //GET THE DELETE
@@ -215,49 +180,51 @@ namespace BlogPost.Controllers
         //get the Details//
         [HttpGet]
         public ActionResult Detail(int? id)
-
         {
-
             if (!id.HasValue)
-
-                return RedirectToAction(nameof(BlogController.Index));
-
-
-
+            return RedirectToAction(nameof(BlogController.Index));
             var userId = User.Identity.GetUserId();
-
-
             var blog = DbContext.Blogs.FirstOrDefault(p =>
-
             p.Id == id.Value);
-
-           
-
-
-            //var blog = DbContext.Blogs.FirstOrDefault(p =>
-
-            //p.Id == id.Value &&
-
-            //p.UserId == userId);
-
-
-
             if (blog == null)
-
-                return RedirectToAction(nameof(BlogController.Index));
-
+            return RedirectToAction(nameof(BlogController.Index));
             var model = new DetailBlogViewModel();
-
             model.Title = blog.Title;
-
             model.Published = blog.Published;
-
             model.Body = blog.Body;
-
             model.MediaUrl = blog.MediaUrl;
-
+            model.DateCreated = blog.DateCreated;
+            model.DateUpdated = blog.DateUpdated;
             return View(model);
         }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult CreateComment()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Authorize]
+        public ActionResult CreateComment(DetailBlogViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            var newComment = new Comment();
+            if (newComment == null)
+            {
+                return RedirectToAction(nameof(BlogController.Detail));
+            }
+            newComment.UserId = User.Identity.GetUserId();
+            newComment.DateCreated = DateTime.Now;
+            newComment.DateUpdated = DateTime.Now;
+            newComment.Body = model.Body;
+            DbContext.Comments.Add(newComment);
+            DbContext.SaveChanges();
+            return RedirectToAction(nameof(BlogController.Detail));
+        }  
     }
 }
 

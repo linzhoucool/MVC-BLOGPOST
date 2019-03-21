@@ -10,7 +10,7 @@
 <html lang="en">
 
 <head>
-
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -34,38 +34,37 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="https://www.residentevil.net/en/">Resident Evil 2 </a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 Menu
                 <i class="fas fa-bars"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                @Html.Partial("_LoginPartial")
-                <ul class="navbar-nav ml-auto">
-                    @*@if ((User.Identity.IsAuthenticated))
-                        {*@
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Index","Blog")">Post</a>
-                    </li>
-                    @*}*@
 
-                    @*<li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("Contact","Home")">Contact</a>
-                        </li>*@
+                <ul class="navbar-nav ml-auto">
+                    @if ((User.Identity.IsAuthenticated))
+                    {
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Blog")">Post</a></li>
+                        <li class="nav-item"><a class="nav-link" href="@Url.Action("Index","Comment")">Create Comment</a></li>
+                    }
+                    @Html.Partial("_LoginPartial")
+                   
                 </ul>
             </div>
         </div>
     </nav>
+    @*//back ground music//*@
+    <audio id="music2" src="~/music/residentevil.mp3" autoplay="autoplay" loop="loop"></audio>
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('@Url.Content("~/img/home-bg.jpg")">
+    <header class="masthead" style="background-image: url('@Url.Content("~/img/sb.jpg")">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-10 mx-auto">
                     <div class="site-heading">
-                        <h1>Clean Blog</h1>
-                        <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                        <h1>Resident Evil</h1>
+                        <span class="subheading">Resident Evil Blog</span>
                     </div>
                 </div>
             </div>
@@ -76,13 +75,14 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-                <iframe width="944" height="531" src="https://www.youtube.com/embed/0OQdNM-2zXI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="800" height="500" style="margin-left:1px;" src="https://www.youtube.com/embed/zmHZV_WveG4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
                 @foreach (var record in Model)
                 {
 
                     <div class="post-preview">
                         <a href="@Url.Action("Detail","Blog",new { Id=record.Id})">
-                            <h2 class="post-title">
+                            <h2 class="post-title"> 
                                 @record.Title
                             </h2>
                             <h3 class="post-subtitle">
@@ -92,7 +92,8 @@
                         <p class="post-meta">
                             @record.DateCreated
                         </p>
-                        <img src="@record.MediaUrl" />
+
+                        <img width="800" height="500" style="margin-left:1px;" src="@Url.Content(record.MediaUrl)"/>
                     </div>
                 }
                 <hr>
@@ -100,7 +101,7 @@
                 <hr>
                 <!-- Pager -->
                 <div class="clearfix">
-                    <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+                    <a class="btn btn-primary float-right" href="#">Back to Top &rarr;</a>
                 </div>
             </div>
         </div>
@@ -114,16 +115,5 @@
 
     <!-- Custom scripts for this template -->
     <script src="~/js/clean-blog.min.js"></script>
-
-
-
-
-
-
-
-
-
-
-
 </body>
-</html>>
+</html>
